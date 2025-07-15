@@ -8,7 +8,7 @@ export default function App() {
   const apiUrl = "http://flask.localhost"; // Assicurati che questo URL sia corretto
 
   useEffect(() => {
-    fetch(`${apiUrl}/users`)
+    fetch(`${apiUrl}/devices`)
     .then((res) => res.json())
     .then((data) => {
       console.log("Dati ricevuti dal backend:", data);
