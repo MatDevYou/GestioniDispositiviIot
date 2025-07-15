@@ -16,15 +16,15 @@ def get_db_connection():
     )
     return conn
 
-@app.route('/users', methods=['GET'])
-def get_users():
+@app.route('/devices', methods=['GET'])
+def get_devices():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT id, name, email FROM users;')
-    users = cur.fetchall()
+    cur.execute('SELECT id, name, status, type FROM devices;')
+    devices = cur.fetchall()
     cur.close()
     conn.close()
-    return jsonify(users)
+    return jsonify(devices)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
