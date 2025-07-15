@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+
+  traefik:
+    image: traefik:v2.11
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
+  flask-app:
+    build: ./flask
+    container_name: flask-app
+    restart: unless-stopped
+    networks:
+      - web
+      - db_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flask-app.rule=Host(`flask.localhost`)"
+      - "traefik.http.routers.flask-app.entrypoints=web"
+      - "traefik.http.services.flask-app.loadbalancer.server.port=5000"
+    environment:
+      POSTGRES_HOST: postgres-db
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+
+  postgres-db:
+    image: postgres:16
+    container_name: postgres-db
+    restart: unless-stopped
+    networks:
+      - db_net
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  web:
+  db_net:
+
+volumes:
+  postgres_data:
