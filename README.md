@@ -2,9 +2,9 @@
 
 Cercherò di utilizzare le seguenti tecnologie:
 
-- **Frontend**: React / Vue (in container)
+- **Frontend**: React e Vite (in container)
 - **Backend**: Python (Flask / FastAPI)
-- **Database**: SQLite o PostgreSQL (in container)
+- **Database**: PostgreSQL (in container)
 - **Storage**: MinIO (compatibile S3)
 - **Monitoraggio**: Prometheus + Grafana
 - **Proxy**: Traefik
