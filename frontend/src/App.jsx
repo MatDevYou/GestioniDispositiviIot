@@ -5,13 +5,16 @@ import { Button } from "./components/ui/button/button.jsx";
 
 export default function App() {
   const [users, setUsers] = useState([]);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = "http://flask.localhost"; // Assicurati che questo URL sia corretto
 
   useEffect(() => {
     fetch(`${apiUrl}/users`)
-      .then((res) => res.json())
-      .then((data) => setUsers(data))
-      .catch((err) => console.error("Error fetching users:", err));
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Dati ricevuti dal backend:", data);
+      setUsers(data);
+    })
+    .catch((err) => console.error("Errore nel fetch degli utenti:", err));
   }, []);
 
   return (
