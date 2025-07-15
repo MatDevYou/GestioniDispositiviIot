@@ -5,9 +5,10 @@ import { Button } from "./components/ui/button/button.jsx";
 
 export default function App() {
   const [users, setUsers] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch("/users")
+    fetch(`${apiUrl}/users`)
       .then((res) => res.json())
       .then((data) => setUsers(data))
       .catch((err) => console.error("Error fetching users:", err));

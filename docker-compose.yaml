@@ -23,7 +23,6 @@ services:
     restart: unless-stopped
     networks:
       - web
-      - db_net
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flask-app.rule=Host(`flask.localhost`)"
@@ -40,7 +39,7 @@ services:
     container_name: postgres-db
     restart: unless-stopped
     networks:
-      - db_net
+      - web
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
@@ -57,11 +56,14 @@ services:
     ports:
       - "5050:80"
     networks:
-      - db_net
+      - web
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://flask-app:5000
     container_name: react-frontend
     restart: unless-stopped
     networks:
@@ -72,9 +74,10 @@ services:
       - "traefik.http.routers.frontend.entrypoints=web"
       - "traefik.http.services.frontend.loadbalancer.server.port=80"
 
+
+
 networks:
   web:
-  db_net:
 
 volumes:
   postgres_data:
