@@ -8,5 +8,5 @@ Cercherò di utilizzare le seguenti tecnologie:
 - **Storage**: MinIO (compatibile S3)
 - **Monitoraggio**: Prometheus + Grafana
 - **Proxy**: Traefik
-- **CI/CD**: GitLab CI o GitHub Actions
+- **CI/CD**: GitLab CI
 - **Cloud**: Azure Container Apps / AKS
