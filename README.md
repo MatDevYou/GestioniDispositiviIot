@@ -1,4 +1,4 @@
-# GestioniDispositiviIot
+# Gestioni Dispositivi Iot
 
 Cercherò di utilizzare le seguenti tecnologie:
 
