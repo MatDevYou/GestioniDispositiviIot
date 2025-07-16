@@ -14,12 +14,12 @@ export default function App() {
       console.log("Dati ricevuti dal backend:", data);
       setUsers(data);
     })
-    .catch((err) => console.error("Errore nel fetch degli utenti:", err));
+    .catch((err) => console.error("Errore nel fetch dei devices:", err));
   }, []);
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Lista Utenti</h1>
+      <h1 className="text-2xl font-bold">Lista Devices</h1>
       {users.length === 0 ? (
         <p>Nessun utente trovato.</p>
       ) : (
@@ -27,7 +27,8 @@ export default function App() {
           <Card key={index}>
             <CardContent className="p-4">
               <p>Nome: {user[1]}</p>
-              <p>Email: {user[2]}</p>
+              <p>status: {user[2]}</p>
+              <p>type: {user[3]}</p>
             </CardContent>
           </Card>
         ))
