@@ -1,7 +1,8 @@
 import os
+from urllib import request
 import psycopg2
 from flask_cors import CORS
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://frontend.localhost"}})
@@ -52,6 +53,30 @@ def toggle_device(device_id):
     conn.close()
 
     return jsonify({'device_id': device_id, 'new_status': new_status})
+
+@app.route('/devices', methods=['POST'])
+def create_device():
+    data = request.get_json()
+
+    name = data.get('name')
+    status = data.get('status', 'offline')  # default offline
+    type_ = data.get('type')
+
+    if not name:
+        return jsonify({'error': 'Il nome del dispositivo è obbligatorio'}), 400
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        'INSERT INTO devices (name, status, type) VALUES (%s, %s, %s) RETURNING id;',
+        (name, status, type_)
+    )
+    new_id = cur.fetchone()[0]
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify({'id': new_id, 'name': name, 'status': status, 'type': type_}), 201
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
