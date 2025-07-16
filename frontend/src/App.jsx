@@ -49,6 +49,13 @@ export default function App() {
       .catch((err) => console.error("Errore nella creazione dispositivo:", err));
   };
 
+  const deleteDevice = (deviceId) => {
+  fetch(`${apiUrl}/devices/${deviceId}`, { method: "DELETE" })
+    .then(() => fetchDevices())
+    .catch((err) => console.error("Errore nella cancellazione dispositivo:", err));
+};
+
+
   // Paginazione
   const indexOfLastDevice = currentPage * devicesPerPage;
   const indexOfFirstDevice = indexOfLastDevice - devicesPerPage;
@@ -115,6 +122,8 @@ export default function App() {
                 <p><strong>Stato:</strong> {device[2]}</p>
                 <p><strong>Tipo:</strong> {device[3]}</p>
                 <Button className="mt-2" onClick={() => toggleDevice(device[0])}>🔄 Cambia Stato</Button>
+                <span className="spacer-horizontal"></span>
+                <Button onClick={() => deleteDevice(device[0])} className="btn-delete">🗑️ Elimina</Button>
               </CardContent>
             </Card>
           ))

@@ -78,5 +78,19 @@ def create_device():
 
     return jsonify({'id': new_id, 'name': name, 'status': status, 'type': type_}), 201
 
+@app.route('/devices/<int:device_id>', methods=['DELETE'])
+def delete_device(device_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute('DELETE FROM devices WHERE id = %s;', (device_id,))
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    return jsonify({'message': f'Dispositivo {device_id} eliminato'}), 200
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
