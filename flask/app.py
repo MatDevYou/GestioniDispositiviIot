@@ -91,6 +91,28 @@ def delete_device(device_id):
 
     return jsonify({'message': f'Dispositivo {device_id} eliminato'}), 200
 
+@app.route('/devices/<int:device_id>', methods=['PUT'])
+def update_device(device_id):
+    data = request.get_json()
+    name = data.get('name')
+    status = data.get('status')
+    type_ = data.get('type')
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        'UPDATE devices SET name = %s, status = %s, type = %s WHERE id = %s;',
+        (name, status, type_, device_id)
+    )
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify({'message': f'Dispositivo {device_id} aggiornato'}), 200
+
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
